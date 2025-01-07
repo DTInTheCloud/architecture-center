@@ -141,23 +141,19 @@ Azure DDoS Network Protection provides enhanced mitigation features and is autom
 
 ## Azure Platform
 
-In addition to the security capabilities available for VMs and networks, there are many features available as part of the Azure platform itself to increase your overall security posture and to protect workloads.
+Securing the compute and network layers are crucial for protecting IaaS workloads, but ensuring that the underlying environment is secured, using available Azure tools, is just as important.
 
-Encryption/KeyVault
+**Policy**
 
-Identity
+Azure Policy should be used to enforce governance and security across your Azure footprint, even extending into other clouds and on-premises using Azure Arc.
 
-Policy
+Individual policies can define the conditions that resources must adhere to. If resources violate these conditions, they will be flagged as non-compliant (Audit mode) or the deployment or change will be rejected altogether by the Azure Resource Manager (Deny mode).
 
-Monitoring
-
--------------------
-
-## Encryption
+**Encryption/KeyVault**
 
 Data encryption is an important component of securing workloads. Encryption encodes information so only authorized receivers can decode it by using a key or certificate. Encryption includes *disk encryption*, for data encryption-at-rest, and *Transport Level Security (TLS)*, for encryption-in-transit over networks.
 
-### Azure Key Vault
+Azure Key Vault
 
 You can protect encryption keys and certificates by storing them in [Azure Key Vault](https://azure.microsoft.com/services/key-vault/), a cloud *Hardware Security Module (HSM)* solution validated for Federal Information Processing Standards (FIPS) 140-2 Level 2. For best practices to allow only authorized applications and users to access Key Vault, see [Secure access to a key vault](/azure/key-vault/key-vault-secure-your-key-vault).
 
@@ -165,7 +161,7 @@ To protect keys in Key Vault, you can enable [soft delete](/azure/key-vault/key-
 
 When hosting SQL Server on a VM, you can use the [SQL Server Connector for Microsoft Azure Key Vault](/sql/relational-databases/security/encryption/extensible-key-management-using-azure-key-vault-sql-server) to get keys for *transparent data encryption (TDE)*, *column level encryption (CLE)*, and backup encryption. For details, see [Configure Azure Key Vault integration for SQL Server on Azure virtual machines](/azure/azure-sql/virtual-machines/windows/azure-key-vault-integration-configure).
 
-### Azure Disk Encryption
+Azure Disk Encryption
 
 Azure Disk Encryption uses a BitLocker external key protector to provide volume encryption for the OS and data disks of Azure VMs, and can be integrated with Azure Key Vault to help you control and manage disk encryption keys and secrets. Each VM generates its own encryption keys and stores them in Azure Key Vault. To configure Azure Key Vault to enable Azure Disk Encryption, see [Create and configure a key vault for Azure Disk Encryption](/azure/virtual-machines/windows/disk-encryption-key-vault).
 
@@ -175,13 +171,21 @@ For highly sensitive workloads, you should also use a *key encryption key (KEK)*
 
 For more information about HSM-protected keys, see [How to generate and transfer HSM-protected keys for Azure Key Vault](/azure/key-vault/key-vault-hsm-protected-keys).
 
-### Network traffic encryption
+Network traffic encryption
 
 Network protocols like HTTPS encrypt data in transit with certificates. Client-to-application traffic usually uses a certificate from a trusted *certificate authority (CA)*. Internal apps can use a certificate from an internal CA or a public CA like DigiCert or GlobalSign. Tier-to-tier communication typically uses a certificate issued by an internal CA, or a self-signed certificate. Azure Key Vault can accommodate any of these certificate types. For more information about creating different certificate types, see [Certificate creation methods](/azure/key-vault/create-certificate).
 
 Azure Key Vault can act as a self-signed certificate CA for tier-to-tier traffic. The *Key Vault VM extension* provides monitoring and automatic refresh of specified certificates on VMs, with or without the private key depending on use case. To use the Key Vault VM extension, see [Key Vault virtual machine extension for Linux](/azure/virtual-machines/extensions/key-vault-linux) or [Key Vault virtual machine extension for Windows](/azure/virtual-machines/extensions/key-vault-windows).
 
 Key Vault can also store keys for network protocols that don't use certificates. Custom workloads could require scripting a [custom script extension](/azure/virtual-machines/windows/tutorial-automate-vm-deployment) that retrieves a key from Key Vault and stores it for applications to use. Apps can also use a VM's [managed identity](/azure/active-directory/managed-identities-azure-resources/tutorial-windows-vm-access-nonaad) to retrieve secrets directly from Key Vault.
+
+Identity
+
+Monitoring
+
+-------------------
+
+## Encryption
 
 ## Multi-region deployment
 
